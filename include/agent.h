@@ -25,14 +25,15 @@ class Agent {
     void render() const;
     void shutdown();
 
-    void setSteering(Body::SteeringMode steering) { body_.setSteering(steering); }   
+	void setSteering(Body::SteeringMode steering) { body_.setSteering(steering); }
+	void setSteering(Body::SteeringMode steering, Agent* agent) { body_.setSteering(steering); }
     const KinematicStatus* getKinematic() const { return body_.getKinematic(); }
     KinematicStatus* getKinematic() { return body_.getKinematic(); }
     World * world_;
     Body body_;
-  private:
-
     Mind mind_;
+	bool leader;
+private:
 };
 
 #endif

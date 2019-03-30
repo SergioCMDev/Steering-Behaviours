@@ -12,10 +12,12 @@
 #include <Steering\Seek.h>
 
 
-void Body::init(const Color color, const Type type, Agent* agent) {
+//void Body::init(const Color color, const Type type, Agent* agent, World* world) {
+	void Body::init(const Color color, const Type type, Agent* agent) {
 	type_ = type;
 	color_ = color;
 	target_ = agent;
+	//_world = world;
 	switch (color) {
 	case Color::Green: sprite_.loadFromFile(AGENT_GREEN_PATH); break;
 	case Color::Blue: sprite_.loadFromFile(AGENT_BLUE_PATH); break;
@@ -83,7 +85,6 @@ void Body::update(const uint32_t dt) {
 			Steering steer;
 			align_.calculate(state_, target_->getKinematic(), &steer);
 			updateSteering(dt, steer);
-			//setOrientation(state_.velocity);
 			break;
 		}
 		case SteeringMode::Velocity_Matching: {
@@ -121,11 +122,18 @@ void Body::update(const uint32_t dt) {
 		case SteeringMode::Cohesion: {
 			Steering steer;
 
+			flee_.calculate(state_, _agentToFlee, &steer);
 
-			cohesion_.calculate(target_->getKinematic(), target_->getKinematic(), &steer);
 			updateSteering(dt, steer);
-			setOrientation(state_.velocity);
+			//setOrientation(state_.velocity);
+
 			break;	}
+		case SteeringMode::Alignment: {
+			Steering steer;
+
+			align_.calculate(state_, _leader->getKinematic(), &steer);
+			updateSteering(dt, steer);
+			break;		}
 		}
 	}
 	else {
@@ -134,6 +142,15 @@ void Body::update(const uint32_t dt) {
 
 	sprite_.setPosition(state_.position.x(), state_.position.y());
 	sprite_.setRotation(state_.orientation);
+}
+
+void Body::SetLeader(Agent* leader) {
+	_leader = leader;
+}
+
+void Body::setAgentToFlee(KinematicStatus* AgentToFlee)
+{
+	_agentToFlee = AgentToFlee;
 }
 
 

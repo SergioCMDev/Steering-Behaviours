@@ -9,6 +9,7 @@
 #define __MIND_H__ 1
 
 #include <cstdint>
+#include <defines.h>
 
 class Body;
 class World;
@@ -20,8 +21,10 @@ class Mind {
 
     void init(World* world, Body* body);
     void update(const uint32_t dt);
-  private:
+	void SearchNearbyAgents();
     World* world_;
+	KinematicStatus* AgentToFlee;
+  private:
     Body* body_;
 };
 

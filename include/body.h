@@ -27,6 +27,7 @@
 #include<Steering/Delegated/LookGoing.h>
 #include<Steering/VelocityMatching.h>
 #include<Steering/Delegated/Flocking.h>
+//#include<world.h>
 
 class Agent;
 
@@ -59,13 +60,16 @@ public:
 		LookGoing,              //d
 		Wander,                 //f
 		Cohesion,				//g
-		Flocking				//h
+		Flocking,				//h
+		Separation,				//i
+		Alignment				//j
 
 	};
 
 	Body() {};
 	~Body() {};
 
+	//void init(const Color color, const Type type, Agent* agent, World* world);
 	void init(const Color color, const Type type, Agent* agent);
 	void update(const uint32_t dt);
 	void render() const;
@@ -77,11 +81,14 @@ public:
 	Agent* target_;
 	void updateSteering(const uint32_t dt, const Steering steering);
 	void updateKinematic(const uint32_t dt, const KinematicSteering steering);
-private:
-
-
-	void updateManual(const uint32_t);
 	void setOrientation(const MathLib::Vec2& velocity);
+	void SetLeader(Agent* leader);
+	void setAgentToFlee(KinematicStatus* AgentToFlee);
+	World* _world;
+private:
+	KinematicStatus* _agentToFlee;
+	Agent* _leader;
+	void updateManual(const uint32_t);
 	void keepInSpeed();
 	void keepInBounds();
 

@@ -141,17 +141,20 @@ void Game::handleInput() {
 			case SDLK_q:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Seek);
-				}				printf("Behavior Of Agent Changed To Seek\n");
+				}
+				printf("Behavior Of Agent Changed To Seek\n");
 				break;
 			case SDLK_w:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Flee);
-				}				printf("Behavior Of Agent Changed To Flee\n");
+				}
+				printf("Behavior Of Agent Changed To Flee\n");
 				break;
 			case SDLK_e:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Arrive);
-				}				printf("Behavior Of Agent Changed To Arrive\n");
+				}
+				printf("Behavior Of Agent Changed To Arrive\n");
 				break;
 			case SDLK_r:
 				for (int i = 0; i < MAX_AGENTS; i++) {
@@ -161,12 +164,14 @@ void Game::handleInput() {
 			case SDLK_t:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Velocity_Matching);
-				}				printf("Behavior Of Agent Changed To Velocity_Matching\n");
+				}
+				printf("Behavior Of Agent Changed To Velocity_Matching\n");
 				break;
 			case SDLK_a:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Pursue);
-				}				printf("Behavior Of Agent Changed To Pursue\n");
+				}
+				printf("Behavior Of Agent Changed To Pursue\n");
 				break;
 			case SDLK_s:
 				for (int i = 0; i < MAX_AGENTS; i++) {
@@ -176,22 +181,42 @@ void Game::handleInput() {
 			case SDLK_d:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::LookGoing);
-				}				printf("Behavior Of Agent Changed To LookGoing\n");
+				}
+				printf("Behavior Of Agent Changed To LookGoing\n");
 				break;
 			case SDLK_f:
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					world_.ia(i)->setSteering(Body::SteeringMode::Wander);
-				}				printf("Behavior Of Agent Changed To Wander\n");
+				}
+				printf("Behavior Of Agent Changed To Wander\n");
 				break;
 
-			case SDLK_g:
+			case SDLK_h://Flocking
+				//world_.ia(3)->setSteering(Body::SteeringMode::Align);
+				////for (int i = 0; i < MAX_AGENTS; i++) {
+
+				////	world_.ia(i)->mind_.Align();
+				////	//->setSteering(Body::SteeringMode::Cohesion);
+				////}
+				//printf("Behavior Of Agent Changed To Cohesion\n");
+				//break;
+			case SDLK_j://Alignment
+				world_.agentLeader->setSteering(Body::SteeringMode::Seek);
 				for (int i = 0; i < MAX_AGENTS; i++) {
-					Steering steer;
-					/*world_.ia(i + 1)*/
-					Cohesion cohesion;
-					cohesion.calculate(world_.ia(i)->getKinematic(), world_.ia(i + 1)->getKinematic(), &steer);
-					world_.ia(i)->body_.updateSteering(dt, steer);
-					setOrientation(state_.velocity);
+					if (!world_.ia(i)->leader) {
+						world_.ia(i)->setSteering(Body::SteeringMode::Alignment);
+						//world_.ia(i)->setSteering(Body::SteeringMode::Seek);
+					}
+				}
+				printf("Behavior Of Agent Changed To Alignment\n");
+				break;
+			case SDLK_g://Cohesion
+				world_.agentLeader->setSteering(Body::SteeringMode::Seek);
+				for (int i = 0; i < MAX_AGENTS; i++) {
+					if (!world_.ia(i)->leader) {
+						world_.ia(i)->setSteering(Body::SteeringMode::Cohesion);
+						//world_.ia(i)->setSteering(Body::SteeringMode::Seek);
+					}
 				}
 				printf("Behavior Of Agent Changed To Cohesion\n");
 				break;
@@ -199,6 +224,7 @@ void Game::handleInput() {
 		}
 	}
 }
+
 
 void Game::update(const uint32_t dt) {
 	world_.update(dt / slo_mo_);

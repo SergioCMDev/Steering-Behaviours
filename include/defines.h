@@ -32,9 +32,12 @@
 #define AGENT_PURPLE_PATH "../media/agent_purple.png"
 
 #define FPS_FONT_SIZE 12
-#define MAX_AGENTS 3
+#define MAX_AGENTS 5
 #define MAX_DISTANCE_COHESION 2
 #define MAX_DISTANCE_SEPARATION 4
+const int AGENTE_LEADER = 2;
+
+
 struct KinematicSteering {
 	MathLib::Vec2 velocity{ 0.0f, 0.0f };
 	float rotation{ 0.0f };
