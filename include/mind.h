@@ -23,7 +23,8 @@ class Mind {
     void update(const uint32_t dt);
 	void SearchNearbyAgents();
     World* world_;
-	KinematicStatus* AgentToFlee;
+	KinematicStatus AgentToFlee;
+	void CheckBoundaries();
   private:
     Body* body_;
 };

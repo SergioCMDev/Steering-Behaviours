@@ -214,11 +214,23 @@ void Game::handleInput() {
 				world_.agentLeader->setSteering(Body::SteeringMode::Seek);
 				for (int i = 0; i < MAX_AGENTS; i++) {
 					if (!world_.ia(i)->leader) {
+						world_.ia(i)->mind_.SearchNearbyAgents();
 						world_.ia(i)->setSteering(Body::SteeringMode::Cohesion);
-						//world_.ia(i)->setSteering(Body::SteeringMode::Seek);
 					}
 				}
 				printf("Behavior Of Agent Changed To Cohesion\n");
+				break;
+
+			case SDLK_i://Separation
+				world_.agentLeader->setSteering(Body::SteeringMode::Seek);
+				for (int i = 0; i < MAX_AGENTS; i++) {
+
+					if (!world_.ia(i)->leader) {
+						world_.ia(i)->mind_.CheckBoundaries();
+						//world_.ia(i)->setSteering(Body::SteeringMode::Separation);
+					}
+				}
+				printf("Behavior Of Agent Changed To Separation\n");
 				break;
 			}
 		}

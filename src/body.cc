@@ -12,12 +12,10 @@
 #include <Steering\Seek.h>
 
 
-//void Body::init(const Color color, const Type type, Agent* agent, World* world) {
-	void Body::init(const Color color, const Type type, Agent* agent) {
+void Body::init(const Color color, const Type type, Agent* agent) {
 	type_ = type;
 	color_ = color;
 	target_ = agent;
-	//_world = world;
 	switch (color) {
 	case Color::Green: sprite_.loadFromFile(AGENT_GREEN_PATH); break;
 	case Color::Blue: sprite_.loadFromFile(AGENT_BLUE_PATH); break;
@@ -125,7 +123,7 @@ void Body::update(const uint32_t dt) {
 			flee_.calculate(state_, _agentToFlee, &steer);
 
 			updateSteering(dt, steer);
-			//setOrientation(state_.velocity);
+			setOrientation(state_.velocity);
 
 			break;	}
 		case SteeringMode::Alignment: {
@@ -134,6 +132,17 @@ void Body::update(const uint32_t dt) {
 			align_.calculate(state_, _leader->getKinematic(), &steer);
 			updateSteering(dt, steer);
 			break;		}
+		case SteeringMode::SeekLeader: {
+			Steering steer;
+
+			seek_.calculate(state_, _leader->getKinematic(), &steer);
+			updateSteering(dt, steer);
+			setOrientation(state_.velocity);
+
+			break;		}
+									   /*
+   if my pos is > radious + leader pos-> seek leader
+   */
 		}
 	}
 	else {
