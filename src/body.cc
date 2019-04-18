@@ -140,9 +140,15 @@ void Body::update(const uint32_t dt) {
 			setOrientation(state_.velocity);
 
 			break;		}
-									   /*
-   if my pos is > radious + leader pos-> seek leader
-   */
+		case SteeringMode::Flocking: {
+			Steering steer;
+
+			flocking_.calculate(state_, _leader->getKinematic(), &steer);
+			updateSteering(dt, steer);
+			setOrientation(state_.velocity);
+
+			break;		}
+
 		}
 	}
 	else {

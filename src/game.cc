@@ -192,13 +192,12 @@ void Game::handleInput() {
 				break;
 
 			case SDLK_h://Flocking
-				//world_.ia(3)->setSteering(Body::SteeringMode::Align);
-				////for (int i = 0; i < MAX_AGENTS; i++) {
+				for (int i = 0; i < MAX_AGENTS; i++) {
 
-				////	world_.ia(i)->mind_.Align();
-				////	//->setSteering(Body::SteeringMode::Cohesion);
-				////}
-				//printf("Behavior Of Agent Changed To Cohesion\n");
+					world_.ia(i)->setSteering(Body::SteeringMode::Flocking);
+					//->setSteering(Body::SteeringMode::Cohesion);
+				}
+				printf("Behavior Of Agent Changed To Flocking\n");
 				//break;
 			case SDLK_j://Alignment
 				world_.agentLeader->setSteering(Body::SteeringMode::Seek);
